@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, TextField, Container, Typography } from '@mui/material';
+import { Button, TextField, Container, Typography, Box } from '@mui/material';
 import api from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 interface ClienteForm {
     nome: string;
@@ -14,10 +15,10 @@ interface ClienteForm {
 
 const emailRegex = /\S+@\S+\.\S+/;
 const telefoneRegex = /^\d{10,11}$/;
-
 const CadastroCliente: React.FC = () => {
     const [cliente, setCliente] = useState<ClienteForm>({ nome: '', email: '', telefone: '', coordenada_x: 0, coordenada_y: 0 });
 
+    const history = useNavigate();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setCliente({ ...cliente, [name]: value });
@@ -112,7 +113,7 @@ const CadastroCliente: React.FC = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" sx={{ mb: 5, mt: 5 }}>
             <ToastContainer />
             <Typography component="h1" variant="h5">
                 Cadastro de Cliente
@@ -180,6 +181,16 @@ const CadastroCliente: React.FC = () => {
                 >
                     Cadastrar
                 </Button>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 5, mt: 1 }}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => history('/clientes')}>
+                        Lista de Clientes
+                    </Button>
+                </Box>
             </form>
         </Container>
     );

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IClienteQuery } from '../interfaces/ICliente';
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: process.env.REACT_APP_BACKEND_URL,
 });
 
 export const listarClientes = (params: IClienteQuery) => {
