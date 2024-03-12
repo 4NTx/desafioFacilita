@@ -1,26 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from 'react-router-dom';
+import Clientes from './components/Clientes';
+import CadastroCliente from './components/CadastroClientes';
+import { Flip, ToastContainer } from "react-toastify";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/clientes" element={<Clientes />} />
+          <Route path="/cadastrar-cliente" element={<CadastroCliente />} />
+        </Routes>
+      </Router>
+
+      <ToastContainer
+        position="bottom-center"
+        limit={3}
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        transition={Flip}
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+      />
+    </>
   );
-}
+};
 
 export default App;
