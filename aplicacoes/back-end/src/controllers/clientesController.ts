@@ -86,15 +86,15 @@ export const listarClientes = async (req: Request, res: Response): Promise<void>
     const valores: (string | undefined)[] = [];
 
     if (nome) {
-        condicoes.push(`nome LIKE '%' || $${condicoes.length + 1} || '%'`);
+        condicoes.push(`unaccent(lower(nome)) LIKE unaccent(lower('%' || $${condicoes.length + 1} || '%'))`);
         valores.push(nome);
     }
     if (email) {
-        condicoes.push(`email = $${condicoes.length + 1}`);
+        condicoes.push(`lower(email) LIKE lower('%' || $${condicoes.length + 1} || '%')`);
         valores.push(email);
     }
     if (telefone) {
-        condicoes.push(`telefone = $${condicoes.length + 1}`);
+        condicoes.push(`telefone LIKE '%' || $${condicoes.length + 1} || '%'`);
         valores.push(telefone);
     }
 
@@ -124,6 +124,8 @@ export const listarClientes = async (req: Request, res: Response): Promise<void>
         res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
+
+
 
 
 
