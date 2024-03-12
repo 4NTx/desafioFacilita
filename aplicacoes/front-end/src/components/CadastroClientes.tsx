@@ -27,24 +27,52 @@ const CadastroCliente: React.FC = () => {
         if (!cliente.nome.trim()) {
             toast.error('O nome é obrigatório.', {
                 position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                rtl: false,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
+                theme: "dark",
+
             });
             return false;
         }
         if (!emailRegex.test(cliente.email)) {
             toast.error('Por favor, insira um e-mail válido.', {
                 position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                rtl: false,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
+                theme: "dark",
+
             });
             return false;
         }
         if (!telefoneRegex.test(cliente.telefone)) {
             toast.error('Por favor, insira um telefone válido com 10 ou 11 dígitos.', {
                 position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                rtl: false,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
+                theme: "dark",
+
             });
             return false;
         }
         if (isNaN(cliente.coordenada_x) || isNaN(cliente.coordenada_y)) {
             toast.error('As coordenadas devem ser numéricas.', {
                 position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                rtl: false,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
+                theme: "dark",
+
             });
             return false;
         }
@@ -59,12 +87,26 @@ const CadastroCliente: React.FC = () => {
             await api.post('/clientes', cliente);
             toast.success('Cliente cadastrado com sucesso!', {
                 position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                rtl: false,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
+                theme: "dark",
+
             });
             setCliente({ nome: '', email: '', telefone: '', coordenada_x: 0, coordenada_y: 0 });
         } catch (error: any) {
             const errorMsg = error.response?.data?.mensagem || 'Erro ao cadastrar o cliente.';
             toast.error(errorMsg, {
                 position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                rtl: false,
+                pauseOnFocusLoss: false,
+                pauseOnHover: false,
+                theme: "dark",
+
             });
         }
     };

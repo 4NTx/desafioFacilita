@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
 } from 'react-router-dom';
 import Clientes from './components/Clientes';
 import CadastroCliente from './components/CadastroClientes';
@@ -13,6 +14,8 @@ const App: React.FC = () => {
     <>
       <Router>
         <Routes>
+
+          <Route path="/" element={<Navigate replace to="/clientes" />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/cadastrar-cliente" element={<CadastroCliente />} />
         </Routes>
