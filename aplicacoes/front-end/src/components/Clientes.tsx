@@ -1,7 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { listarClientes } from '../services/api';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { listarClientes, calcularRota } from '../services/api';
 import { ICliente, IClienteQuery } from '../interfaces/ICliente';
-import { Box, TextField, Button, List, ListItem, ListItemText, Typography, Container, Grid, Paper } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Container,
+  Grid,
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent
+} from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -10,7 +25,10 @@ const Clientes: React.FC = () => {
   const [filtro, setFiltro] = useState<IClienteQuery>({});
   const [pagina, setPagina] = useState<number>(1);
   const [totalPaginas, setTotalPaginas] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [rotaClientes, setRotaClientes] = useState<ICliente[]>([]);
   const limite = 10;
+  const history = useNavigate();
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -22,11 +40,35 @@ const Clientes: React.FC = () => {
     fetchClientes();
   }, [filtro, pagina]);
 
+  const handleAbrirModal = async () => {
+    try {
+      const response = await calcularRota();
+      if (Array.isArray(response.data.rota)) {
+        setRotaClientes(response.data.rota);
+      } else {
+        console.log('A resposta não é um array:', response.data);
+        setRotaClientes([]);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar a rota dos clientes", error);
+      setRotaClientes([]);
+    }
+    setIsModalOpen(true);
+  };
+
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
         Lista de Clientes
       </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
+        <Button variant="contained" color="primary" onClick={() => history('/cadastrar-cliente')} style={{ marginRight: '10px' }}>
+          Cadastrar Cliente
+        </Button>
+        <Button variant="contained" color="secondary" onClick={handleAbrirModal}>
+          Ver Rota de Visitação
+        </Button>
+      </Box>
       <Box sx={{ flexGrow: 1, mb: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
@@ -58,8 +100,19 @@ const Clientes: React.FC = () => {
         <Button endIcon={<ArrowForwardIosIcon />} onClick={() => setPagina(pagina + 1)} disabled={pagina >= totalPaginas}>
           Próxima
         </Button>
-
       </Box>
+      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <DialogTitle>Ordem de Visitação dos Clientes</DialogTitle>
+        <DialogContent>
+          <List>
+            {rotaClientes.map((cliente, index) => (
+              <ListItem key={index}>
+                <ListItemText primary={`${cliente.nome}`} secondary={`Coordenadas: (${cliente.coordenada_x}, ${cliente.coordenada_y})`} />
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 };
