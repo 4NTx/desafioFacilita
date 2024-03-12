@@ -12,6 +12,9 @@ interface ClienteForm {
     coordenada_y: number;
 }
 
+const emailRegex = /\S+@\S+\.\S+/;
+const telefoneRegex = /^\d{10,11}$/;
+
 const CadastroCliente: React.FC = () => {
     const [cliente, setCliente] = useState<ClienteForm>({ nome: '', email: '', telefone: '', coordenada_x: 0, coordenada_y: 0 });
 
@@ -20,32 +23,48 @@ const CadastroCliente: React.FC = () => {
         setCliente({ ...cliente, [name]: value });
     };
 
+    const validarFormulario = () => {
+        if (!cliente.nome.trim()) {
+            toast.error('O nome é obrigatório.', {
+                position: "bottom-center",
+            });
+            return false;
+        }
+        if (!emailRegex.test(cliente.email)) {
+            toast.error('Por favor, insira um e-mail válido.', {
+                position: "bottom-center",
+            });
+            return false;
+        }
+        if (!telefoneRegex.test(cliente.telefone)) {
+            toast.error('Por favor, insira um telefone válido com 10 ou 11 dígitos.', {
+                position: "bottom-center",
+            });
+            return false;
+        }
+        if (isNaN(cliente.coordenada_x) || isNaN(cliente.coordenada_y)) {
+            toast.error('As coordenadas devem ser numéricas.', {
+                position: "bottom-center",
+            });
+            return false;
+        }
+        return true;
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validarFormulario()) return;
+
         try {
             await api.post('/clientes', cliente);
             toast.success('Cliente cadastrado com sucesso!', {
                 position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
             });
             setCliente({ nome: '', email: '', telefone: '', coordenada_x: 0, coordenada_y: 0 });
         } catch (error: any) {
             const errorMsg = error.response?.data?.mensagem || 'Erro ao cadastrar o cliente.';
             toast.error(errorMsg, {
                 position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
             });
         }
     };
