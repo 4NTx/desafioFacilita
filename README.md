@@ -29,7 +29,7 @@ Este guia fornece instruções detalhadas sobre como iniciar as aplicações de 
 
 1. Abra um terminal e clone o repositório:
    ```bash
-   git clone <URL_DO_PROJETO>
+   git clone https://github.com/4NTx/desafioFacilita.git
    ```
 2. Navegue até o diretório do projeto usando `cd`:
    ```bash
