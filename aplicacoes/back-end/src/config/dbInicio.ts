@@ -56,5 +56,5 @@ async function verificarECriarExtensao() {
  */
 export async function inicializarBancoDeDados() {
     await verificarECriarTabelas();
-    await verificarECriarExtensao(); // Inclui a verificação e criação da extensão unaccent
+    await verificarECriarExtensao();
 }
